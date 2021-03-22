@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot name="sick_outdoorscan3" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="outdoorscan3" params="prefix parent_link topic *origin
+                                           min_range=0.1 max_range=40.0
+                                           min_angle=-137.5 max_angle=137.5
+                                           update_rate=10 sample_size=692
+                                           robot_namespace=/">
+    <link name="${prefix}_outdoorscan3_base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://sick_safetyscanners_description/meshes/outdoorscan3.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <origin xyz="0 0 0.056" rpy="1.5707963267948966 0 -1.5707963267948966" />
+        <material name="sick_orange">
+          <color rgba="0.8 0.4 0 1" />
+        </material>
+      </visual>
+    </link>
+
+    <!-- origin for the lidar data -->
+    <link name="${prefix}_outdoorscan3_sensor_link" />
+
+    <joint name="${prefix}_outdoorscan3_base_link_joint" type="fixed">
+      <parent link="${parent_link}" />
+      <child link="${prefix}_outdoorscan3_base_link" />
+      <xacro:insert_block name="origin" />
+    </joint>
+    <joint name="${prefix}_outdoorscan3_sensor_link_joint" type="fixed">
+      <parent link="${prefix}_outdoorscan3_base_link" />
+      <child link="${prefix}_outdoorscan3_sensor_link" />
+      <origin xyz="0 0 0.12" rpy="0 0 0" />
+    </joint>
+
+    <gazebo reference="${prefix}_outdoorscan3_sensor_link">
+      <turnGravityOff>true</turnGravityOff>
+      <sensor type="ray" name="${prefix}_outdoorscan3_sensor_link">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>${update_rate}</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>${sample_size}</samples>
+              <resolution>1</resolution>
+              <min_angle>${min_angle}</min_angle>
+              <max_angle>${max_angle}</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>${min_range}</min>
+            <max>${max_range}</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.001</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
+          <topicName>${topic}</topicName>
+          <frameName>${prefix}_outdoorscan3_sensor_link</frameName>
+          <robotNamespace>${robot_namespace}</robotNamespace>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

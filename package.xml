@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sick_safetyscanners_description</name>
+  <version>0.0.0</version>
+  <description>Description package to compliment the sick_safetyscanners package</description>
+
+  <maintainer email="civerachb@clearpathrobotics.com">Chris Iverach-Brereton</maintainer>
+  <author email="civerachb@clearpathrobotics.com">Chris Iverach-Brereton</author>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>sensor_msgs</depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>
